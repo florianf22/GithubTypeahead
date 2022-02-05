@@ -1,0 +1,14 @@
+.heading {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.heading__highlight,
+.heading__period {
+  color: var(--color-primary);
+}
+
+.heading__highlight {
+  color: var(--color-primary);
+}

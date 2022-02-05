@@ -1,0 +1,98 @@
+.loading,
+.error {
+  margin-top: 3em;
+  font-size: 2rem;
+  border-bottom: 1px solid var(--color-grey);
+  padding-bottom: 0.25em;
+  font-weight: 700;
+}
+
+.loading {
+  color: var(--color-text);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.users {
+  margin-top: 3em;
+  margin-bottom: 10%;
+  width: clamp(280px, 80%, 700px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* to make the overflow scroll */
+  height: 550px;
+  overflow: scroll;
+}
+
+.user {
+  width: 100%;
+  background-color: var(--color-grey);
+  color: var(--color-tertiary);
+  margin-top: 1em;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2em;
+  padding: 0.5em 1em;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.user__avatar {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user__info {
+  display: flex;
+  width: 100%;
+}
+
+.user__name {
+  font-size: 2rem;
+  color: var(--color-primary-dark);
+  margin-right: auto;
+}
+
+.user__link {
+  text-decoration: none;
+  color: var(--color-primary);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  align-self: end;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.25em 0.5em;
+}
+
+.user__link::after {
+  content: '';
+  background: var(--color-primary-light);
+  position: absolute;
+  left: 12px;
+  bottom: -6px;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  transition: 300ms ease-in;
+  z-index: -1;
+  border-radius: 5px;
+}
+
+.user__link:hover::after {
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .user__info {
+    flex-direction: column;
+  }
+}

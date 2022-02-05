@@ -37,6 +37,14 @@ const UsersList: React.FC<Props> = ({ loading, error, term }) => {
 
   if (loading) return <p className="loading">we&apos;re loading. hang on</p>;
   if (error) return <p className="error">{error}</p>;
+  if (users.length === 0) {
+    return (
+      <p className="empty">
+        either start typing so that we can find github accounts or input
+        something that we can find
+      </p>
+    );
+  }
 
   return (
     <section className="users" onScroll={handleScroll} ref={ref}>

@@ -14,11 +14,11 @@ export const fetchUsers = async (
   dispatch: React.Dispatch<AdjustmentAction>,
   page?: number,
 ): Promise<User[]> => {
-  const response = page
-    ? await fetch(`${BASE_URL_GITHUB}?q=${term}&per_page=${PER_PAGE}`)
-    : await fetch(
-        `${BASE_URL_GITHUB}?q=${term}&per_page=${PER_PAGE}&page=${page}`,
-      );
+  const response = await fetch(
+    `${BASE_URL_GITHUB}?q=${term}&per_page=${PER_PAGE}&page=${
+      page ? page + 1 : 1
+    }`,
+  );
 
   if (!response.ok) {
     throw new Error(response.statusText);

@@ -7,8 +7,10 @@ interface GithubContextType extends StateType {
 
 const initialState: StateType = {
   users: [],
+  term: '',
   page: 1,
   totalCount: 0,
+  noResult: false,
 };
 
 export const GithubContext = React.createContext<GithubContextType>(

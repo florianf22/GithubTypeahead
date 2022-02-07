@@ -1,4 +1,5 @@
 // types
+import { GithubInfo } from '../../types/GithubInfo';
 import { User } from '../../types/User';
 
 type UsersAction = {
@@ -7,16 +8,22 @@ type UsersAction = {
 };
 
 type MetaDataAction = {
-  type: 'set_page' | 'set_total_count';
-  payload: number;
+  type: 'set_info';
+  payload: GithubInfo;
 };
 
-export type AdjustmentAction = UsersAction | MetaDataAction;
+type NoResultAction = {
+  type: 'set_no_result' | 'set_has_result';
+};
+
+export type AdjustmentAction = UsersAction | MetaDataAction | NoResultAction;
 
 export interface StateType {
   users: User[];
+  term: string;
   totalCount: number;
   page: number;
+  noResult: boolean;
 }
 
 export const reducer = (
@@ -36,16 +43,24 @@ export const reducer = (
         users: [...state.users, ...action.payload],
       };
     }
-    case 'set_page': {
+    case 'set_info': {
       return {
         ...state,
-        page: action.payload,
+        term: action.payload.term,
+        totalCount: action.payload.totalCount,
+        page: action.payload.page,
       };
     }
-    case 'set_total_count': {
+    case 'set_no_result': {
       return {
         ...state,
-        totalCount: action.payload,
+        noResult: true,
+      };
+    }
+    case 'set_has_result': {
+      return {
+        ...state,
+        noResult: false,
       };
     }
 

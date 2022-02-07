@@ -36,7 +36,7 @@ const TypeAhead: React.FC = () => {
         <input
           type="text"
           className="typeahead__input"
-          placeholder="find the user"
+          placeholder="find  user"
           value={term}
           onChange={e => setTerm(e.target.value)}
         />

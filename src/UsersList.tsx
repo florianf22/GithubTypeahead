@@ -5,6 +5,9 @@ import { GithubContext, fetchMoreUsers } from './context/github';
 import './UsersList.css';
 // constants
 import { PER_PAGE } from './constants';
+// hooks
+import useOnScreen from './hooks/useOnScreen';
+import useOnWindowScroll from './hooks/useOnWindowScroll';
 
 interface Props {
   loading: boolean;
@@ -13,45 +16,48 @@ interface Props {
 }
 
 const UsersList: React.FC<Props> = ({ loading, error, term }) => {
-  const { dispatch, users, page, totalCount } = React.useContext(GithubContext);
+  const { users, noResult, dispatch, page, totalCount } =
+    React.useContext(GithubContext);
   const [loadingMoreUsers, setLoadingMoreUsers] = React.useState(false);
-  const ref = React.useRef<HTMLElement>(null);
+  const lastElementRef = React.useRef<HTMLDivElement>(null);
+  const { isOnScreen } = useOnScreen(lastElementRef);
 
-  const handleScroll = async (): Promise<void> => {
-    if (ref.current) {
-      const { scrollTop, scrollHeight, clientHeight } = ref.current;
-
+  const handleScroll = React.useCallback(async (): Promise<void> => {
+    if (lastElementRef.current) {
       if (
-        scrollTop + clientHeight === scrollHeight &&
+        isOnScreen(lastElementRef.current) &&
         !loadingMoreUsers &&
         page * PER_PAGE < totalCount
       ) {
         setLoadingMoreUsers(true);
-
         await fetchMoreUsers(term, page, dispatch);
-
         setLoadingMoreUsers(false);
       }
     }
-  };
+  }, [dispatch, loadingMoreUsers, page, totalCount, term, isOnScreen]);
+
+  useOnWindowScroll(handleScroll);
 
   if (loading) return <p className="loading">we&apos;re loading. hang on</p>;
   if (error) return <p className="error">{error}</p>;
-  if (users.length === 0) {
+  if (noResult) {
     return (
       <p className="empty">
-        either start typing so that we can find github accounts or input
-        something that we can find
+        make sure not to input gibberish but something we can find
       </p>
     );
   }
 
   return (
-    <section className="users" onScroll={handleScroll} ref={ref}>
+    <section className="users">
       {users.map((user, i) => (
         // FIXME: sometimes github send the same user twice and keys match, using idx instead
-        // eslint-disable-next-line react/no-array-index-key
-        <div className="user" key={i}>
+        <div
+          className="user"
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          ref={i === users.length - 1 ? lastElementRef : null}
+        >
           <img
             className="user__avatar"
             src={user.avatar_url}

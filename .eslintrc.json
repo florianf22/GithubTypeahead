@@ -51,7 +51,8 @@
     ],
     "object-curly-newline": "off",
     "arrow-parens": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "react/require-default-props": "off"
   },
   "settings": {
     "import/resolver": {

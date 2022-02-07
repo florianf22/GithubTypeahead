@@ -25,8 +25,28 @@ export const fetchUsers = async (
 
   const json = await response.json();
 
-  if (!page) dispatch({ type: 'set_total_count', payload: json.total_count });
-  if (page) dispatch({ type: 'set_page', payload: page + 1 });
+  if (json.total_count === 0) {
+    dispatch({ type: 'set_no_result' });
+    return [];
+  }
+
+  dispatch({ type: 'set_has_result' });
+
+  if (!page) {
+    dispatch({
+      type: 'set_info',
+      payload: { page: 1, term, totalCount: json.total_count },
+    });
+  } else {
+    dispatch({
+      type: 'set_info',
+      payload: {
+        page: page + 1,
+        term,
+        totalCount: json.total_count,
+      },
+    });
+  }
 
   const users = json.items.map((user: User) => ({
     id: user.id,
